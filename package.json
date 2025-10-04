@@ -1,0 +1,20 @@
+{
+  "name": "skillsync",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:web\" \"npm run dev:issuer\" \"npm run dev:api\"",
+    "dev:web": "cd apps/web && npm run dev",
+    "dev:issuer": "cd apps/issuer-portal && npm run dev",
+    "dev:api": "cd apps/api && npm run dev",
+    "build": "npm run build:web && npm run build:issuer && npm run build:api",
+    "test": "npm run test:contracts && npm run test:api",
+    "test:contracts": "cd packages/contracts && npm run test",
+    "test:api": "cd apps/api && npm run test",
+    "deploy:contracts": "cd packages/contracts && npm run deploy"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "typescript": "^5.0.0"
+  }
+}
