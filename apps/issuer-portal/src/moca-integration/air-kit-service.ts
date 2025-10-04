@@ -14,6 +14,7 @@ export class MocaIntegrationService {
    */
   public static async create(): Promise<MocaIntegrationService> {
     const service = new MocaIntegrationService();
+    // The initialize method is now private and called internally by create.
     await service.initialize();
     return service;
   }
@@ -23,7 +24,7 @@ export class MocaIntegrationService {
    */
   private async initialize() {
     // Prevent re-initialization
-    if (this.isInitialized) return;
+    if (this.isInitialized || typeof window === 'undefined') return;
 
     try {
       this.airService = new AirService({
@@ -46,13 +47,33 @@ export class MocaIntegrationService {
     }
   }
 
+  /**
+   * Retrieves the DID of the currently logged-in user.
+   */
+  async getDid(): Promise<string> {
+    if (!this.isInitialized) {
+      throw new Error('Service not initialized.');
+    }
+    const userInfo = await this.airService.getUserInfo();
+    const did = userInfo.airId?.id;
+    if (!did) {
+        // Prompt user to log in if they don't have a DID yet.
+        await this.airService.login();
+        const newUserInfo = await this.airService.getUserInfo();
+        const newDid = newUserInfo.airId?.id;
+        if (!newDid) throw new Error("Could not retrieve user DID after login.");
+        return newDid;
+    }
+    return did;
+  }
+
   async initializeUserSession(): Promise<UserSession> {
     if (!this.isInitialized) {
       throw new Error('Service not initialized. Please use the static create() method.');
     }
 
     try {
-      // This will open a login modal for the user
+      // This will open a login modal for the user if not already logged in
       await this.airService.login();
       
       const userInfo = await this.airService.getUserInfo();
@@ -68,61 +89,6 @@ export class MocaIntegrationService {
       return session;
     } catch (error) {
       console.error('🔥 Failed to initialize user session:', error);
-      throw error;
-    }
-  }
-
-  async issueCredential(recipientDid: string, credentialId: string, credentialData: CredentialData): Promise<void> {
-    if (!this.isInitialized) {
-      throw new Error('Service not initialized');
-    }
-
-    try {
-        const { token } = await this.airService.getAccessToken();
-        const userInfo = await this.airService.getUserInfo();
-        const issuerDid = userInfo.airId?.id as string;
-
-        if (!issuerDid) {
-          throw new Error("Could not determine issuer DID. User may not be authenticated.");
-        }
-
-        await this.airService.issueCredential({
-            authToken: token,
-            issuerDid: issuerDid,
-            credentialId: credentialId,
-            credentialSubject: credentialData.claims,
-        });
-      
-      console.log('✅ Credential issued successfully:', credentialId);
-    } catch (error) {
-      console.error('🔥 Failed to issue credential:', error);
-      throw error;
-    }
-  }
-
-  async verifyCredential(programId: string): Promise<VerificationResult> {
-    if (!this.isInitialized) {
-      throw new Error('Service not initialized');
-    }
-
-    try {
-      const { token } = await this.airService.getAccessToken();
-
-      const verification = await this.airService.verifyCredential({
-        authToken: token,
-        programId: programId,
-      });
-      
-      const result: VerificationResult = {
-        isValid: verification.success, 
-        verifiedAt: new Date().toISOString(),
-        credentialId: verification.payload?.credentialId || 'N/A' 
-      };
-      
-      console.log(`✅ Credential verification result for program ${programId}: ${result.isValid}`);
-      return result;
-    } catch (error) {
-      console.error('🔥 Failed to verify credential:', error);
       throw error;
     }
   }
