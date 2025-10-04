@@ -10,7 +10,4 @@ module.exports = {
       chainId: parseInt(process.env.MOCA_CHAIN_ID || "222888"),
     },
   },
-  paths: {
-    artifacts: "../api/src/artifacts",
-  },
 };

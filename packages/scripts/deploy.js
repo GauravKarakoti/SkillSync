@@ -2,20 +2,20 @@ async function main() {
   const [deployer] = await ethers.getSigners();
   
   console.log("Deploying contracts with the account:", deployer.address);
-  console.log("Account balance:", (await deployer.getBalance()).toString());
 
   const CredentialRegistry = await ethers.getContractFactory("CredentialRegistry");
   const credentialRegistry = await CredentialRegistry.deploy();
   
-  await credentialRegistry.deployed();
+  await credentialRegistry.waitForDeployment();
+  const credentialRegistryAddress = await credentialRegistry.getAddress();
   
-  console.log("CredentialRegistry deployed to:", credentialRegistry.address);
+  console.log("CredentialRegistry deployed to:", credentialRegistryAddress);
   
   // Save deployment info
   const fs = require('fs');
   const deploymentInfo = {
     network: 'moca-testnet',
-    contractAddress: credentialRegistry.address,
+    contractAddress: credentialRegistryAddress,
     deployer: deployer.address,
     timestamp: new Date().toISOString()
   };
