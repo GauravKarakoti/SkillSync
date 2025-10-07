@@ -1,5 +1,9 @@
 import { CredentialSchema, IssuanceFormData, BulkIssuanceRecord } from '../types/issuance';
 
+interface IssuanceResponse {
+  txHash: string;
+}
+
 export const CREDENTIAL_SCHEMAS: Record<string, CredentialSchema> = {
   'web3-bootcamp': {
     id: 'web3-bootcamp',
@@ -26,7 +30,7 @@ export class IssuanceUtils {
     return did.startsWith('did:moca:') && did.length > 20;
   }
 
-  static async issueCredential(issuanceData: IssuanceFormData, issuerDid: string): Promise<any> {
+  static async issueCredential(issuanceData: IssuanceFormData, issuerDid: string): Promise<IssuanceResponse> {
     try {
       const response = await fetch('/api/credentials/issue', {
         method: 'POST',

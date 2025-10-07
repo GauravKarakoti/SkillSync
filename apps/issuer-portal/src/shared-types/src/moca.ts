@@ -14,7 +14,7 @@ export interface UserSession {
 
 export interface CredentialData {
   schema: string;
-  claims: Record<string, any>;
+  claims: Record<string, unknown>;
   expiration?: number;
   metadata?: CredentialMetadata;
 }
@@ -32,7 +32,7 @@ export interface ZKProofRequirements {
   issuerTrusted?: boolean;
   minAge?: number;
   maxAge?: number;
-  customRequirements?: Record<string, any>;
+  customRequirements?: Record<string, unknown>;
 }
 
 export interface ZKProofResult {
@@ -61,7 +61,7 @@ export interface MocaNetworkConfig {
 
 export interface AIRKitIntegration {
   accountService: {
-    socialLogin: (provider: 'google' | 'github' | 'apple', options?: any) => Promise<UserSession>;
+    socialLogin: (provider: 'google' | 'github' | 'apple', options?: Record<string, unknown>) => Promise<UserSession>;
     createSmartWallet: (userDid: string) => Promise<string>;
     validateSession: (sessionToken: string) => Promise<boolean>;
   };
@@ -76,7 +76,7 @@ export interface CredentialIssueRequest {
   issuer: string;
   recipient: string;
   schema: string;
-  claims: Record<string, any>;
+  claims: Record<string, unknown>;
   expiration?: number;
 }
 

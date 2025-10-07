@@ -6,7 +6,7 @@ export interface UserSession {
 
 export interface CredentialData {
   schema: string;
-  claims: Record<string, any>;
+  claims: Record<string, unknown>;
   expiration?: number;
 }
 
@@ -14,7 +14,7 @@ export interface ZKProofRequirements {
   credentialExists: boolean;
   isActive: boolean;
   issuerTrusted?: boolean;
-  customRequirements?: Record<string, any>;
+  customRequirements?: Record<string, unknown>;
 }
 
 export interface VerificationResult {

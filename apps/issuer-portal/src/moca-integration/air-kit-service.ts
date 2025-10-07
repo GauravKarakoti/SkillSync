@@ -1,4 +1,4 @@
-import { UserSession, CredentialData, ZKProofRequirements, VerificationResult } from './types';
+import { UserSession } from './types';
 import { AirService, BUILD_ENV_TYPE } from '@mocanetwork/airkit';
 
 export class MocaIntegrationService {

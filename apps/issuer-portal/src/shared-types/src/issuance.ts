@@ -3,8 +3,6 @@
  * Covers schemas, bulk operations, and issuer analytics
  */
 
-import { CredentialData, VerificationResult } from './moca';
-
 export interface CredentialSchema {
   id: string;
   name: string;
@@ -29,7 +27,7 @@ export interface FieldValidation {
   pattern?: string;
   minValue?: number;
   maxValue?: number;
-  allowedValues?: any[];
+  allowedValues?: unknown[];
 }
 
 export interface IssuanceFormData {

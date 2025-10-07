@@ -7,14 +7,14 @@ export * from './issuance';
 export * from './credential'; // Assuming you have this from previous setup
 
 // Common utility types
-export type ApiResponse<T = any> = {
+export type ApiResponse<T = unknown> = {
   success: boolean;
   data?: T;
   error?: string;
   timestamp: string;
 };
 
-export type PaginatedResponse<T = any> = ApiResponse<{
+export type PaginatedResponse<T = unknown> = ApiResponse<{
   items: T[];
   total: number;
   page: number;

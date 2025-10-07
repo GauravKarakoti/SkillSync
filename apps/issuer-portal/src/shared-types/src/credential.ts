@@ -19,6 +19,6 @@ export interface CredentialBase {
 }
 
 export interface CredentialWithData extends CredentialBase {
-  data: Record<string, any>;
+  data: Record<string, unknown>;
   transactionHash?: string;
 }
