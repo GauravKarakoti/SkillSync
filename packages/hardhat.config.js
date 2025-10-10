@@ -2,7 +2,7 @@ require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config();
 
 module.exports = {
-  solidity: "0.8.19",
+  solidity: "0.8.20",
   networks: {
     "moca-testnet": {
       url: process.env.MOCA_RPC_URL || "https://testnet-rpc.mocachain.org/",
